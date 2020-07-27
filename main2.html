@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>app</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-animate.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+
+    <body ng-app='myApp' ng-controller="myController" ng-keydown="keypress($event)">
+
+        <h1 id='keyDisplay'>{{ lastKeyPress }}</h1>
+        <div class='keys' ng-init="keys=[
+                {kcode:'65', sym:'A', sound:'clap',      isPlaying:false},
+                {kcode:'83', sym:'S', sound:'hihat',     isPlaying:false},
+                {kcode:'68', sym:'D', sound:'kick',      isPlaying:false},
+                {kcode:'70', sym:'F', sound:'openhat',   isPlaying:false},
+                {kcode:'71', sym:'G', sound:'boom',      isPlaying:false},
+                {kcode:'72', sym:'H', sound:'ride',      isPlaying:false},
+                {kcode:'74', sym:'J', sound:'snare',     isPlaying:false},
+                {kcode:'75', sym:'K', sound:'tom',       isPlaying:false},
+                {kcode:'76', sym:'L', sound:'tink',      isPlaying:false}
+                ]">
+            <div ng-repeat="keys in keys"
+                ng-click='getSound(keys.kcode)'
+                data-key={{keys.kcode}}
+                class='key'
+                ng-class="{playing: keys.isPlaying}">
+                    <kdb>{{ keys.sym }}</kdb>
+                    <span class="sound">{{ keys.sound }}</span>
+            </div>
+        </div>
+
+    </body>
+
+
+    <script>
+       var myApp = angular.module('myApp', ['ngAnimate', 'ngRoute']);
+       myApp.controller("myController", function ($scope, $window, $location, $route, $routeParams) {
+
+            $scope.keypress = function ($event) {
+                $scope.getSound($event.keyCode);
+                $scope.lastKeyPress = $event.keyCode;
+                $location.search('lastKey', $event.keyCode);
+            }
+
+            $scope.getSound = function (theKeyCode) {
+                console.log($scope);
+                console.log($scope.keys);
+
+                const keyElems = document.querySelectorAll('.key');
+                keyElems.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+                index = getKeyIndex(theKeyCode);
+                if (index == -1) return;
+                
+                $scope.playAudio($scope.keys[index].sound);
+                $scope.keys[index].isPlaying = true;
+                keyElems[index].classList.add('playing');//deg
+            }
+
+            function removeTransition(e) {
+                console.log("prop: ", e.propertyName);
+                if (e.propertyName !== 'transform') return;
+                this.classList.remove('playing');
+                $scope.keys[getKeyIndex(this.getAttribute("data-key"))].isPlaying = false;
+            }
+
+            $scope.playAudio = function(theSound) {
+                console.log("the sound: ", theSound);
+                var audio = new Audio('sounds/' + theSound + '.wav');
+                audio.currentTime = 0;
+                audio.play();
+            }
+
+            function getKeyIndex(keyCode) {
+                for (i in $scope.keys) {
+                    if ($scope.keys[i].kcode == keyCode) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        });
+    </script>
+    <script src='myRouter.js'></script>
+</html>
