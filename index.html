@@ -10,9 +10,10 @@
     </head>
 
 
-    <body ng-app='myApp' ng-controller="myController" ng-keydown="keypress($event)">
+    <!-- <body ng-app='myApp' ng-controller="myController" ng-keydown="keypress($event)"> -->
+    <body ng-app='myApp'>
 
-        <h1 id='keyDisplay'>{{ lastKeyPress }}</h1>
+        <!-- <h1 id='keyDisplay'>{{ lastKeyPress }}</h1>
         <div class='keys' ng-init="keys=[
                 {kcode:'65', sym:'A', sound:'clap',      isPlaying:false},
                 {kcode:'83', sym:'S', sound:'hihat',     isPlaying:false},
@@ -32,7 +33,7 @@
                     <kdb>{{ keys.sym }}</kdb>
                     <span class="sound">{{ keys.sound }}</span>
             </div>
-        </div>
+        </div> -->
         <!-- <ng-include src='musicBox.html' onload="true"></ng-include> -->
         <music-box></music-box>
         <!-- <comp-key></comp-key> -->
@@ -48,54 +49,54 @@
     //     $httpProvider.defaults.withCredentials = true;
     // });
 
-       myApp.controller("myController", function ($scope, $window, $location, $route, $routeParams) {
+    //    myApp.controller("myController", function ($scope, $window, $location, $route, $routeParams) {
 
-            $scope.keypress = function ($event) {
-                $scope.getSound($event.keyCode);
-                $scope.lastKeyPress = $event.keyCode;
-                $location.search('lastKey', $event.keyCode);
-            }
+    //         $scope.keypress = function ($event) {
+    //             $scope.getSound($event.keyCode);
+    //             $scope.lastKeyPress = $event.keyCode;
+    //             $location.search('lastKey', $event.keyCode);
+    //         }
 
-            $scope.getSound = function (theKeyCode) {
-                console.log($scope);
-                console.log($scope.keys);
+    //         $scope.getSound = function (theKeyCode) {
+    //             console.log($scope);
+    //             console.log($scope.keys);
 
-                const keyElems = document.querySelectorAll('.key');
-                keyElems.forEach(key => key.addEventListener('transitionend', removeTransition));
+    //             const keyElems = document.querySelectorAll('.key');
+    //             keyElems.forEach(key => key.addEventListener('transitionend', removeTransition));
 
-                index = getKeyIndex(theKeyCode);
-                if (index == -1) return;
+    //             index = getKeyIndex(theKeyCode);
+    //             if (index == -1) return;
                 
-                $scope.playAudio($scope.keys[index].sound);
-                $scope.keys[index].isPlaying = true;
-                keyElems[index].classList.add('playing');//deg
-            }
+    //             $scope.playAudio($scope.keys[index].sound);
+    //             $scope.keys[index].isPlaying = true;
+    //             keyElems[index].classList.add('playing');//deg
+    //         }
 
-            function removeTransition(e) {
-                console.log("prop: ", e.propertyName);
-                if (e.propertyName !== 'transform') return;
-                this.classList.remove('playing');
-                $scope.keys[getKeyIndex(this.getAttribute("data-key"))].isPlaying = false;
-            }
+    //         function removeTransition(e) {
+    //             console.log("prop: ", e.propertyName);
+    //             if (e.propertyName !== 'transform') return;
+    //             this.classList.remove('playing');
+    //             $scope.keys[getKeyIndex(this.getAttribute("data-key"))].isPlaying = false;
+    //         }
 
-            $scope.playAudio = function(theSound) {
-                console.log("the sound: ", theSound);
-                var audio = new Audio('sounds/' + theSound + '.wav');
-                audio.currentTime = 0;
-                audio.play();
-            }
+    //         $scope.playAudio = function(theSound) {
+    //             console.log("the sound: ", theSound);
+    //             var audio = new Audio('sounds/' + theSound + '.wav');
+    //             audio.currentTime = 0;
+    //             audio.play();
+    //         }
 
-            function getKeyIndex(keyCode) {
-                for (i in $scope.keys) {
-                    if ($scope.keys[i].kcode == keyCode) {
-                        return i;
-                    }
-                }
-                return -1;
-            }
-        });
+    //         function getKeyIndex(keyCode) {
+    //             for (i in $scope.keys) {
+    //                 if ($scope.keys[i].kcode == keyCode) {
+    //                     return i;
+    //                 }
+    //             }
+    //             return -1;
+    //         }
+    //     });
     </script>
     <script src="monoBox.component.js"></script>
     <script src="musicBox.component.js"></script>
-    <script src="myAnim.js"></script>
+    <!-- <script src="myAnim.js"></script> -->
 </html>

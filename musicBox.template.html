@@ -1,8 +1,15 @@
-<!-- <p>Success {{ $ctrl.list[0].sound }} </p> -->
+<h1>last key: {{ $mainCtrl.lastKeyPressed }}</h1>
+<h1>last key: {{ $mainctrl.lastKeyPressed }}</h1>
+<h1>last key: {{ mainCtrl.lastKeyPressed }}</h1>
+<h1>last key: {{ mainctrl.lastKeyPressed }}</h1>
+<h1>last key: {{ lastKeyPressed }}</h1>
+<h1>last key: <span ng-bind="lastKeyPressed"></span></h1>
+<h1>last key: <span ng-bind="mainctrl.lastKeyPressed"></span></h1>
 <div class='keys'>
     <mono-box
-        ng-repeat="osef in $ctrl.list"
-        test="osef"
-        my-anim="playing">
+        ng-repeat="each in mainctrl.list"
+        ng-click="mainctrl.playElemSound(this.each.sound)"
+        whichkey="each"
+        class="key">
     </mono-box>
 </div>

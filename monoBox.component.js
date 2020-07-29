@@ -1,20 +1,14 @@
-function MonoBoxController() {
-    var ctrl = this;
+'use strict';
+function MonoBoxController($scope, $element) {
+    //var monoCtrl = this;
 
-    ctrl.monoPlaySound = function() {
-        console.log('playing: ', ctrl.test.sound);
-        var audio = new Audio('sounds/' + ctrl.test.sound + '.wav');
-        audio.currentTime = 0;
-        audio.play();
-        ctrl.test.isPlaying = true;
-        
-    }
 }
 
 angular.module('myApp').component('monoBox', {
     templateUrl: 'monoBox.template.html',
     controller: MonoBoxController,
+    controllerAs: 'monoctrl',
     bindings: {
-        test: '<'
+        whichkey: '<'
     }
 });
